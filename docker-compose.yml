@@ -1,0 +1,21 @@
+services:
+  mobile:
+    image: edgeslam
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./rgbd_dataset_freiburg2_desk.bag:/home/edgeslam/rgbd_dataset_freiburg2_desk.bag
+      - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
+  edge:
+    image: edgeslam
+    stdin_open: true
+    tty: true
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
