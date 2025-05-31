@@ -1,0 +1,16 @@
+To start the containers:
+docker compose up -d
+
+To build the executables located in Examples/ROS/Edge_SLAM
+./build_ros.sh
+
+keyframe port #: 5000
+frame port #: 5001
+map update port #: 5002
+
+
+To enter mobile container for debugging:
+docker compose exec mobile bash
+
+To enter edge container for debugging:
+docker compose exec edge bash
