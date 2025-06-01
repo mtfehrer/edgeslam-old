@@ -11,7 +11,9 @@ services:
       - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
-    # command: ["./start_mobile_container.sh"]
+    command: ["bash", "start_mobile_container.sh"]
+    devices:
+      - "/dev/dri:/dev/dri"
     networks:
       mynet:
         ipv4_address: 1.1.0.2
@@ -25,7 +27,9 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
       - ./edge_input.txt:/home/edgeslam/edge_input.txt
-    # command: ["./start_edge_container.sh"]
+    command: ["bash", "start_edge_container.sh"]
+    devices:
+      - "/dev/dri:/dev/dri"
     networks:
       mynet:
         ipv4_address: 1.1.0.3
