@@ -11,6 +11,7 @@ services:
       - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
+      - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
     command: ["bash", "start_mobile_container.sh"]
     devices:
       - "/dev/dri:/dev/dri"
@@ -27,6 +28,7 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
       - ./edge_input.txt:/home/edgeslam/edge_input.txt
+      - edgeslam_edge:/home/edgeslam/Examples/ROS/Edge_SLAM
     command: ["bash", "start_edge_container.sh"]
     devices:
       - "/dev/dri:/dev/dri"
@@ -34,6 +36,10 @@ services:
       mynet:
         ipv4_address: 1.1.0.3
   
+volumes:
+  edgeslam_edge:
+  edgeslam_mobile:
+
 networks:
   mynet:
     driver: bridge
