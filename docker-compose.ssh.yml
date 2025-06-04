@@ -12,7 +12,7 @@ services:
       - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
-      - ./build_zed.sh:/home/edgeslam/build_zed.sh
+      - ./download_and_build_zed.sh:/home/edgeslam/download_and_build_zed.sh
       - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
       - zed_stuff:/home/edgeslam/zed_stuff
     command: ["bash", "start_mobile_container.sh"]
