@@ -14,6 +14,7 @@ services:
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
       - ./build_zed.sh:/home/edgeslam/build_zed.sh
       - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
+      - zed_stuff:/home/edgeslam/zed_stuff
     command: ["bash", "start_mobile_container.sh"]
     devices:
       - "/dev/dri:/dev/dri"
@@ -42,6 +43,7 @@ services:
 volumes:
   edgeslam_edge:
   edgeslam_mobile:
+  zed_stuff:
 
 networks:
   mynet:
