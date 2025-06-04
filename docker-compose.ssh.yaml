@@ -4,9 +4,9 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=172.17.0.1:10.0
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:~/.Xauthority
       - ./rgbd_dataset_freiburg2_desk.bag:/home/edgeslam/rgbd_dataset_freiburg2_desk.bag
       - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
@@ -24,9 +24,9 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=172.17.0.1:10.0
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:~/.Xauthority
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
       - ./edge_input.txt:/home/edgeslam/edge_input.txt
       - edgeslam_edge:/home/edgeslam/Examples/ROS/Edge_SLAM

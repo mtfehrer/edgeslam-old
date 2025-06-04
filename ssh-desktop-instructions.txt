@@ -1,0 +1,10 @@
+on local machine:
+-run `xhost +`
+-use `-Y` in SSH command
+
+on remote machine:
+-run `xhost +`
+-write `X11UseLocalHost no` in /etc/ssh/sshd_config
+-run `apt install xauth` in container
+-mount ~/.Xauthority:~/.Xauthority
+-DISPLAY=172.17.0.1:10.0 in container
