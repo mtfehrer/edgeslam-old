@@ -5,6 +5,7 @@ services:
     tty: true
     environment:
       - DISPLAY=172.17.0.1:10.0
+      - XAUTHORITY=$HOME/.Xauthority
     volumes:
       - $HOME/.Xauthority:$HOME/.Xauthority
       - ./rgbd_dataset_freiburg2_desk.bag:/home/edgeslam/rgbd_dataset_freiburg2_desk.bag
@@ -25,6 +26,7 @@ services:
     tty: true
     environment:
       - DISPLAY=172.17.0.1:10.0
+      - XAUTHORITY=$HOME/.Xauthority
     volumes:
       - $HOME/.Xauthority:$HOME/.Xauthority
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
