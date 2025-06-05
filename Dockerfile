@@ -92,3 +92,26 @@ RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/R
 
 # Entrypoint into edgeslam
 WORKDIR /home/edgeslam
+
+
+# New stuff michael added:
+# --------------------------------
+RUN wget https://download.stereolabs.com/zedsdk/4.2/cu12/ubuntu22
+
+RUN ./ZED_SDK_Ubuntu22_cuda12.1_v4.2.5.zstd.run
+
+RUN mkdir catkin_ws
+RUN cd catkin_ws
+RUN mkdir -p ./src
+RUN cd ./src
+RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
+RUN cd ../
+RUN rosdep install --from-paths src --ignore-src -r -y
+RUN catkin_make -DCMAKE_BUILD_TYPE=Release
+RUN cd ..
+
+RUN source ~/.bashrc
+
+RUN ./build_ros.sh
+
+RUN mkdir /home/edgeslam/Examples/ROS/Edge_SLAM/frames

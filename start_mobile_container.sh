@@ -5,7 +5,7 @@ export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS
 #check if zed stuff exists
 if [ ! -d "/home/edgeslam/zed_stuff" ]; then
     mkdir zed_stuff
-    mv download_and_build_zed.sh ./zed_stuff
+    cp download_and_build_zed.sh ./zed_stuff
     cd zed_stuff
     ./download_and_build_zed.sh
     cd ..
@@ -16,7 +16,7 @@ if [ ! -f "/home/edgeslam/Examples/ROS/Edge_SLAM/RGBD" ]; then
 fi
 roscore &
 cd Examples/ROS/Edge_SLAM/
-if [ ! -d "/home/edgeslam/Examples/ROS/Edge_SLAM" ]; then
+if [ ! -d "/home/edgeslam/Examples/ROS/Edge_SLAM/frames" ]; then
     mkdir frames
 fi
 rosrun Edge_SLAM ZED ../../../Vocabulary/ORBvoc.txt ../../RGB-D/TUM2.yaml client < /home/edgeslam/mobile_input.txt
