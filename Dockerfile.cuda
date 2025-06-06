@@ -83,7 +83,9 @@ RUN echo "source /home/catkin_ws/devel/setup.bash" >> ~/.bashrc
 # ZED Ros wrapper
 WORKDIR /home/catkin_ws
 RUN cd src && \
-    git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
+    git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git && \
+    cd zed-ros-wrapper && \
+    git checkout 5d7b7001c2e80e0c403ca71d57a1373f041ee0a3
 RUN rosdep install --from-paths src --ignore-src -r -y
 RUN /bin/bash -c '. /opt/ros/melodic/setup.sh && \
     catkin_make -DCMAKE_BUILD_TYPE=Release -DCMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs -DCUDA_CUDART_LIBRARY=/usr/local/cuda/lib64/stubs -DCMAKE_CXX_FLAGS="-Wl,--allow-shlib-undefined" && \
