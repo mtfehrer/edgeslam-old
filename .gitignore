@@ -63,3 +63,9 @@ Examples/ROS/Edge_SLAM/build/
 
 # Datasets
 *.bag
+
+# SDKs
+*.run
+
+# Backup images
+*.tar

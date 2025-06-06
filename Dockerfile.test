@@ -1,0 +1,19 @@
+FROM ubuntu:18.04
+
+COPY ZED_SDK_Ubuntu18_cuda12.1_v4.0.8.zstd.run .
+
+#new
+RUN apt update && apt install -y zstd
+
+RUN chmod u+x ZED_SDK_Ubuntu18_cuda12.1_v4.0.8.zstd.run
+RUN ./ZED_SDK_Ubuntu18_cuda12.1_v4.0.8.zstd.run
+
+RUN mkdir catkin_ws
+RUN cd catkin_ws
+RUN mkdir -p ./src
+RUN cd ./src
+RUN git clone --recursive https://github.com/stereolabs/zed-ros-wrapper.git
+RUN cd ../
+RUN rosdep install --from-paths src --ignore-src -r -y
+RUN catkin_make -DCMAKE_BUILD_TYPE=Release
+RUN cd ..
