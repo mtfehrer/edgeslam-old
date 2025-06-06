@@ -1,4 +1,4 @@
-FROM stereolabs/zed:4.0-devel-cuda11.8-ubuntu18.04
+FROM stereolabs/zed:4.0-gl-devel-cuda10.2-ubuntu18.04
 
 # Use bash to avoid sourcing errors later on
 SHELL ["/bin/bash", "-c"]
