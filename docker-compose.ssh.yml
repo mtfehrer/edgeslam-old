@@ -15,6 +15,11 @@ services:
     networks:
       mynet:
         ipv4_address: 1.1.0.2
+    devices:
+      - driver: nvidia
+        count: all
+        capabilities: [gpu]
+    privileged: true
   edge:
     image: edgeslam-cuda
     stdin_open: true
@@ -31,6 +36,11 @@ services:
     networks:
       mynet:
         ipv4_address: 1.1.0.3
+    devices:
+      - driver: nvidia
+        count: all
+        capabilities: [gpu]
+    privileged: true
   
 volumes:
   edgeslam_mobile:
