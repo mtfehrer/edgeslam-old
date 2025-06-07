@@ -4,7 +4,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=172.17.0.1:10.0
+      - DISPLAY=$DISPLAY
       - XAUTHORITY=$HOME/.Xauthority
     volumes:
       - $HOME/.Xauthority:$HOME/.Xauthority
@@ -20,7 +20,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=172.17.0.1:10.0
+      - DISPLAY=$DISPLAY
       - XAUTHORITY=$HOME/.Xauthority
     volumes:
       - $HOME/.Xauthority:$HOME/.Xauthority
