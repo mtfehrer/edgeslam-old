@@ -23,6 +23,11 @@ services:
               count: all
               capabilities: [gpu]
     privileged: true
+    devices:
+      - /dev/hidraw5:/dev/hidraw5
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
+
   edge:
     image: edgeslam-cuda
     stdin_open: true
@@ -47,6 +52,10 @@ services:
               count: all
               capabilities: [gpu]
     privileged: true
+    devices:
+      - /dev/hidraw5:/dev/hidraw5
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
   
 volumes:
   edgeslam_mobile:

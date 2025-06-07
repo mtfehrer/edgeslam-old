@@ -1,47 +1,66 @@
 services:
   mobile:
-    image: edgeslam
+    image: edgeslam-cuda
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=$HOME/.Xauthority
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./rgbd_dataset_freiburg2_desk.bag:/home/edgeslam/rgbd_dataset_freiburg2_desk.bag
-      - ./TUM2.yaml:/home/edgeslam/Examples/RGB-D/TUM2.yaml
+      - $HOME/.Xauthority:$HOME/.Xauthority
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
-      - ./download_and_build_zed.sh:/home/edgeslam/download_and_build_zed.sh
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
-      - zed_stuff:/home/edgeslam/zed_stuff
-    command: ["bash", "start_mobile_container.sh"]
-    devices:
-      - "/dev/dri:/dev/dri"
+    command: ["bash", "/home/edgeslam/start_mobile_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.2
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    privileged: true
+    devices:
+      - /dev/hidraw5:/dev/hidraw5
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
   edge:
-    image: edgeslam
+    image: edgeslam-cuda
     stdin_open: true
     tty: true
     environment:
-      - DISPLAY=${DISPLAY}
+      - DISPLAY=$DISPLAY
+      - XAUTHORITY=$HOME/.Xauthority
     volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+      - $HOME/.Xauthority:$HOME/.Xauthority
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
       - ./edge_input.txt:/home/edgeslam/edge_input.txt
+      - /tmp/.X11-unix:/tmp/.X11-unix
       - edgeslam_edge:/home/edgeslam/Examples/ROS/Edge_SLAM
-    command: ["bash", "start_edge_container.sh"]
-    devices:
-      - "/dev/dri:/dev/dri"
+    command: ["bash", "/home/edgeslam/start_edge_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.3
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    privileged: true
+    devices:
+      - /dev/hidraw5:/dev/hidraw5
+      - /dev/video0:/dev/video0
+      - /dev/video1:/dev/video1
   
 volumes:
-  edgeslam_edge:
   edgeslam_mobile:
-  zed_stuff:
+  edgeslam_edge:
 
 networks:
   mynet:
