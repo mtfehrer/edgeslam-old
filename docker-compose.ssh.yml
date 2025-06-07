@@ -10,6 +10,7 @@ services:
       - $HOME/.Xauthority:$HOME/.Xauthority
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
+      - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
     command: ["bash", "/home/edgeslam/start_mobile_container.sh"]
     networks:
       mynet:
@@ -32,8 +33,8 @@ services:
         ipv4_address: 1.1.0.3
   
 volumes:
-  edgeslam_edge:
   edgeslam_mobile:
+  edgeslam_edge:
 
 networks:
   mynet:
