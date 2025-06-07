@@ -10,9 +10,7 @@ services:
       - $HOME/.Xauthority:$HOME/.Xauthority
       - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
       - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
-    command: ["bash", "start_mobile_container.sh"]
-    devices:
-      - "/dev/dri:/dev/dri"
+    command: ["bash", "/home/edgeslam/start_mobile_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.2
@@ -28,9 +26,7 @@ services:
       - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
       - ./edge_input.txt:/home/edgeslam/edge_input.txt
       - edgeslam_edge:/home/edgeslam/Examples/ROS/Edge_SLAM
-    command: ["bash", "start_edge_container.sh"]
-    devices:
-      - "/dev/dri:/dev/dri"
+    command: ["bash", "/home/edgeslam/start_edge_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.3
