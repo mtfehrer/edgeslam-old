@@ -115,5 +115,7 @@ COPY SN29105317.conf /usr/local/zed/settings/
 
 RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS" >> ~/.bashrc
 
-WORKDIR /home
-CMD ["/bin/bash"]
+WORKDIR /home/edgeslam
+
+RUN mkdir /home/edgeslam/Examples/ROS/Edge_SLAM/frames && \
+    bash build_ros.sh

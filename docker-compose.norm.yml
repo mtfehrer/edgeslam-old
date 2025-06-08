@@ -1,18 +1,13 @@
 services:
   mobile:
-    image: edgeslam-cuda
-    stdin_open: true
-    tty: true
+    image: edgeslam-mobile
     environment:
       - DISPLAY=$DISPLAY
-      - XAUTHORITY=$HOME/.Xauthority
     volumes:
-      - $HOME/.Xauthority:$HOME/.Xauthority
-      - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
-      - ./mobile_input.txt:/home/edgeslam/mobile_input.txt
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - edgeslam_mobile:/home/edgeslam/Examples/ROS/Edge_SLAM
-    command: ["bash", "/home/edgeslam/start_mobile_container.sh"]
+      - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
+      - ./mobile_input_centralized.txt:/home/edgeslam/mobile_input.txt
+    command: ["bash", "start_mobile_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.2
@@ -29,39 +24,20 @@ services:
       - /dev/video0:/dev/video0
       - /dev/video1:/dev/video1
   edge:
-    image: edgeslam-cuda
+    image: edgeslam-edge
     stdin_open: true
     tty: true
     environment:
       - DISPLAY=$DISPLAY
-      - XAUTHORITY=$HOME/.Xauthority
     volumes:
-      - $HOME/.Xauthority:$HOME/.Xauthority
-      - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
-      - ./edge_input.txt:/home/edgeslam/edge_input.txt
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - edgeslam_edge:/home/edgeslam/Examples/ROS/Edge_SLAM
-    command: ["bash", "/home/edgeslam/start_edge_container.sh"]
+      - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
+      - ./edge_input_centralized.txt:/home/edgeslam/edge_input.txt
+    command: ["bash", "start_edge_container.sh"]
     networks:
       mynet:
         ipv4_address: 1.1.0.3
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    privileged: true
-    devices:
-      - /dev/hidraw5:/dev/hidraw5
-      - /dev/video0:/dev/video0
-      - /dev/video1:/dev/video1
   
-volumes:
-  edgeslam_mobile:
-  edgeslam_edge:
-
 networks:
   mynet:
     driver: bridge

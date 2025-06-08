@@ -1,21 +1,14 @@
-#Check if we already have SDK
-cd build
-if [ ! -f "./ZED_SDK_Ubuntu18_cuda12.1_v4.0.8.zstd.run" ]; then
-    wget https://download.stereolabs.com/zedsdk/4.0/cu121/ubuntu18
+#Check if edgeslam-mobile image exists
+if ! docker image inspect edgeslam-mobile > /dev/null 2>&1; then
+    echo "Image 'edgeslam-mobile' not found. Building..."
+    docker build -t edgeslam-mobile -f Dockerfile.mobile .
 else
-    echo "SDK already downloaded."
+    echo "Image 'edgeslam-mobile' already exists."
 fi
-#Check if edgeslam image exists
-if ! docker image inspect edgeslam > /dev/null 2>&1; then
-    echo "Image 'edgeslam' not found. Building..."
-    docker build -t edgeslam -f Dockerfile .
+#Check if edgeslam-edge image exists
+if ! docker image inspect edgeslam-edge > /dev/null 2>&1; then
+    echo "Image 'edgeslam-edge' not found. Building..."
+    docker build -t edgeslam-edge -f Dockerfile.edge .
 else
-    echo "Image 'edgeslam' already exists."
-fi
-#Check if edgeslam-new image exists
-if ! docker image inspect edgeslam-new > /dev/null 2>&1; then
-    echo "Image 'edgeslam-new' not found. Building..."
-    docker build -t edgeslam-new -f Dockerfile.new .
-else
-    echo "Image 'edgeslam-new' already exists."
+    echo "Image 'edgeslam-edge' already exists."
 fi

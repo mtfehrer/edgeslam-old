@@ -90,5 +90,6 @@ RUN apt-get install -y iperf3
 
 RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS" >> ~/.bashrc
 
-# Entrypoint into edgeslam
 WORKDIR /home/edgeslam
+
+RUN bash build_ros.sh
