@@ -1,46 +1,46 @@
 services:
-  mobile:
-    image: edgeslam-mobile
-    environment:
-      - DISPLAY=$DISPLAY
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
-      - ./mobile_input_centralized.txt:/home/edgeslam/mobile_input.txt
-    command: ["bash", "start_mobile_container.sh"]
-    networks:
-      mynet:
-        ipv4_address: 1.1.0.2
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    privileged: true
-    devices:
-      - /dev/hidraw5:/dev/hidraw5
-      - /dev/video0:/dev/video0
-      - /dev/video1:/dev/video1
-  edge:
-    image: edgeslam-edge
-    stdin_open: true
-    tty: true
-    environment:
-      - DISPLAY=$DISPLAY
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
-      - ./edge_input_centralized.txt:/home/edgeslam/edge_input.txt
-    command: ["bash", "start_edge_container.sh"]
-    networks:
-      mynet:
-        ipv4_address: 1.1.0.3
-  
+    mobile:
+        image: edgeslam-mobile
+        environment:
+            - DISPLAY=$DISPLAY
+        volumes:
+            - /tmp/.X11-unix:/tmp/.X11-unix
+            - ./start_mobile_container.sh:/home/edgeslam/start_mobile_container.sh
+            - ./mobile_input_centralized.txt:/home/edgeslam/mobile_input.txt
+        command: ["bash", "start_mobile_container.sh"]
+        networks:
+            mynet:
+                ipv4_address: 1.1.0.2
+        deploy:
+            resources:
+                reservations:
+                    devices:
+                        - driver: nvidia
+                          count: all
+                          capabilities: [gpu]
+        privileged: true
+        devices:
+            - /dev/hidraw5:/dev/hidraw5
+            - /dev/video0:/dev/video0
+            - /dev/video1:/dev/video1
+    edge:
+        image: edgeslam-edge
+        stdin_open: true
+        tty: true
+        # environment:
+        #   - DISPLAY=$DISPLAY
+        volumes:
+            # - /tmp/.X11-unix:/tmp/.X11-unix
+            - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
+            - ./edge_input_centralized.txt:/home/edgeslam/edge_input.txt
+        command: ["bash", "start_edge_container.sh"]
+        networks:
+            mynet:
+                ipv4_address: 1.1.0.3
+
 networks:
-  mynet:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 1.1.0.0/16
+    mynet:
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 1.1.0.0/16
