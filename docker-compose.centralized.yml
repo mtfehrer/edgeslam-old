@@ -25,12 +25,7 @@ services:
             - /dev/video1:/dev/video1
     edge:
         image: edgeslam-edge
-        stdin_open: true
-        tty: true
-        # environment:
-        #   - DISPLAY=$DISPLAY
         volumes:
-            # - /tmp/.X11-unix:/tmp/.X11-unix
             - ./start_edge_container.sh:/home/edgeslam/start_edge_container.sh
             - ./edge_input_centralized.txt:/home/edgeslam/edge_input.txt
         command: ["bash", "start_edge_container.sh"]
