@@ -1,0 +1,8 @@
+#!/bin/bash
+source /opt/ros/melodic/setup.bash
+export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS
+roscore &
+cd /home/edgeslam/Examples/ROS/Edge_SLAM/
+rosrun Edge_SLAM RGB-D ../../../Vocabulary/ORBvoc.txt ../../RGB-D/TUM2.yaml client < /home/edgeslam/mobile_input.txt &
+sleep 5
+#rosbag play _bagfile_
