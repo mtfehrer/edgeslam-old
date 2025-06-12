@@ -56,13 +56,6 @@ RUN git clone --recursive https://github.com/stevenlovegrove/Pangolin.git -b v0.
 # Set up simlinks to Eigen3
 RUN ln -s /usr/include/eigen3/Eigen /usr/local/include/Eigen
 
-# Build Edge-SLAM
-WORKDIR /home
-RUN git clone -b docker --single-branch https://github.com/zainasir/edgeslam.git \
-    && cd edgeslam \
-    && chmod +x build.sh \
-    && ./build.sh
-
 # Install ROS Melodic
 WORKDIR ~/
 RUN ln -snf /usr/share/zoneinfo/$CONTAINER_TIMEZONE /etc/localtime && echo $CONTAINER_TIMEZONE > /etc/timezone
@@ -88,9 +81,15 @@ RUN wget https://downloads.es.net/pub/iperf/iperf-3.9.tar.gz \
 # NOTE: THIS IS A HACK. Removing this line leads to missing library issues for iperf3.
 RUN apt-get install -y iperf3
 
-RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS" >> ~/.bashrc
-
 WORKDIR /home/edgeslam
+
+COPY . .
+
+# Build Edge-SLAM
+RUN chmod +x build.sh && \
+    ./build.sh
+
+RUN echo "export ROS_PACKAGE_PATH=\${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS" >> ~/.bashrc
 
 RUN source /opt/ros/melodic/setup.bash && \
     export ROS_PACKAGE_PATH=${ROS_PACKAGE_PATH}:/home/edgeslam/Examples/ROS && \
