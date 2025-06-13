@@ -7,6 +7,7 @@ services:
             - /tmp/.X11-unix:/tmp/.X11-unix
             - ./start_mobile_testing_container.sh:/home/edgeslam/start_mobile_container.sh
             - ./mobile_input_centralized.txt:/home/edgeslam/mobile_input.txt
+            - ./points.csv:/home/edgeslam/points.csv
         command: ["bash", "start_mobile_container.sh"]
         networks:
             mynet:
@@ -20,6 +21,10 @@ services:
         networks:
             mynet:
                 ipv4_address: 1.1.0.3
+    planner:
+        image: path-planner
+        volumes:
+            - ./points.csv:/points.csv
 
 networks:
     mynet:
