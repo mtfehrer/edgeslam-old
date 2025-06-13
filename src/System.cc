@@ -22,6 +22,7 @@
 
 #include "System.h"
 #include "Converter.h"
+#include "MapPointExporter.h"
 #include <thread>
 #include <pangolin/pangolin.h>
 #include <iomanip>
@@ -89,10 +90,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, std::str
         mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                                 mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
-        //Create the Point Cloud Server
-        mapPointExporter = new mapPointExporter(&mpMap.newMapPoints);
-        //this needs to run in separate thread
-        mapPointExporter.run();
+        mapPointExporter = new MapPointExporter(&mpMap);
+        new thread(mapPointExporter.run);
     } else if (RunType.compare("server") == 0){
         // Edge-SLAM: added settings file
         //Initialize the Local Mapping thread and launch
