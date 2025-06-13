@@ -1,6 +1,6 @@
 FROM ubuntu:24.04
 
-WORKDIR /home/planner
+WORKDIR /home/path-planner
 
 COPY . .
 

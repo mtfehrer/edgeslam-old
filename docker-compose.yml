@@ -21,7 +21,7 @@ services:
         networks:
             mynet:
                 ipv4_address: 1.1.0.3
-    planner:
+    path-planner:
         image: path-planner
         volumes:
             - ./points.csv:/points.csv

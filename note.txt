@@ -1,1 +1,0 @@
-In Dockerfile.mobile, we don't need to manually cache the first apt install command. It's cached automatically.
