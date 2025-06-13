@@ -51,7 +51,6 @@ public:
     std::vector<KeyFrame*> GetAllKeyFrames();
     std::vector<MapPoint*> GetAllMapPoints();
     std::vector<MapPoint*> GetReferenceMapPoints();
-    std::set<MapPoint*> GetNewMapPoints();
 
     long unsigned int MapPointsInMap();
     long unsigned  KeyFramesInMap();
@@ -77,8 +76,6 @@ public:
 protected:
     std::set<MapPoint*> mspMapPoints;
 
-    std::set<MapPoint*> newMapPoints;
-
     std::set<KeyFrame*> mspKeyFrames;
 
     std::vector<MapPoint*> mvpReferenceMapPoints;
@@ -89,8 +86,6 @@ protected:
     int mnBigChangeIdx;
 
     std::mutex mMutexMap;
-
-    std::mutex newMutexMap;
 };
 
 } //namespace ORB_SLAM

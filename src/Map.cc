@@ -72,8 +72,6 @@ void Map::AddMapPoint(MapPoint *pMP)
 {
     unique_lock<mutex> lock(mMutexMap);
     mspMapPoints.insert(pMP);
-    unique_lock<mutex> lock(newMutexMap);
-    newMapPoints.insert(pMP);
 }
 
 void Map::EraseMapPoint(MapPoint *pMP)
@@ -165,14 +163,6 @@ void Map::clear()
     mnMaxKFid = 0;
     mvpReferenceMapPoints.clear();
     mvpKeyFrameOrigins.clear();
-}
-
-set<MapPoint*> Map::GetNewMapPoints()
-{
-    unique_lock<mutex> lock(newMutexMap);
-    set<MapPoint*> res = newMapPoints;
-    newMapPoints.clear();
-    return res;
 }
 
 } //namespace ORB_SLAM
