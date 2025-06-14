@@ -454,9 +454,8 @@ void System::SaveTrajectoryTUM(const string &filename)
 
 
 // Edge-SLAM: server
-void System::SaveMapPoints(const string &filename)
+void System::SaveMapPoints()
 {
-  cout << endl << "Saving map points to " << filename << " ..." << endl;
   vector<MapPoint*> mapPoints = mpMap -> GetAllMapPoints();
   
   // Get world position of each map point
@@ -466,14 +465,13 @@ void System::SaveMapPoints(const string &filename)
   }
 
   ofstream f;
-  f.open(filename.c_str());
+  f.open(mapPointsFilename.c_str());
 
   for (size_t i=0; i<worldPos.size(); i++) {
-    f << worldPos[i].at<float>(0,0) << " " << worldPos[i].at<float>(0,1) << " " << worldPos[i].at<float>(0,2) << endl;
+    f << worldPos[i].at<float>(0,0) << "," << worldPos[i].at<float>(0,1) << "," << worldPos[i].at<float>(0,2) << endl;
   }
 
   f.close();
-  cout << "Map points saved!" << endl;
 }
 
 void System::SaveKeyFrameTrajectoryTUM(const string &filename)
