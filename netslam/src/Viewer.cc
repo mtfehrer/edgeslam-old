@@ -92,6 +92,8 @@ void Viewer::Run()
     bool bFollow = true;
     bool bLocalizationMode = false;
 
+    // This counter is to save pangolin frames as images for offline reconstruction
+    int frameCount = 0;
     while(1)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -132,11 +134,23 @@ void Viewer::Run()
         if(menuShowPoints)
             mpMapDrawer->DrawMapPoints();
 
+	// Save pangolin frame as png
+	std::string pangFrame = std::to_string(frameCount);
+	pangFrame = std::string("./frames/") + pangFrame + "_pangolin_frame";
+	d_cam.SaveOnRender(pangFrame);
+	
         pangolin::FinishFrame();
 
         cv::Mat im = mpFrameDrawer->DrawFrame();
         cv::imshow("Edge-SLAM: Current Frame",im);
         cv::waitKey(mT);
+
+	// Save opencv frame as png
+	std::string cvFrame = std::to_string(frameCount);
+	cvFrame = std::string("./frames/") + cvFrame + "_cv_frame.png";
+	cv::imwrite(cvFrame, im);
+
+	frameCount++;
 
         if(menuReset)
         {

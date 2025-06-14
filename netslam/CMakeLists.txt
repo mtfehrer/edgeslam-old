@@ -73,6 +73,7 @@ src/MapPoint.cc
 src/KeyFrame.cc
 src/Map.cc
 src/MapDrawer.cc
+src/NetworkProfiler.cc
 src/Optimizer.cc
 src/PnPsolver.cc
 src/Frame.cc
@@ -123,4 +124,3 @@ target_link_libraries(mono_kitti ${PROJECT_NAME})
 add_executable(mono_euroc
 Examples/Monocular/mono_euroc.cc)
 target_link_libraries(mono_euroc ${PROJECT_NAME})
-

@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-
 # Edge-SLAM: replaced next include statement with the content of rosbuild.cmake
 # and made edits as indicated below to prevent cmake deprecated policy warnings
 #include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
@@ -122,6 +121,7 @@ ${PROJECT_SOURCE_DIR}/../../../Thirdparty/g2o/lib/libg2o.so
 ${PROJECT_SOURCE_DIR}/../../../lib/libEdge_SLAM.so
 )
 
+
 # Node for monocular camera
 rosbuild_add_executable(Mono
 src/ros_mono.cc
@@ -149,3 +149,11 @@ target_link_libraries(RGBD
 ${LIBS}
 )
 
+# Node for publishing ZED depth stream
+rosbuild_add_executable(ZED
+src/ros_zed.cc
+)
+
+target_link_libraries(ZED
+${LIBS}
+)
