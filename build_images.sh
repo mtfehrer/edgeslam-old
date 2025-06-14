@@ -12,10 +12,10 @@ if ! docker image inspect edgeslam-edge > /dev/null 2>&1; then
 else
     echo "Image 'edgeslam-edge' already exists."
 fi
-#Check if path-planner image exists
-if ! docker image inspect path-planner > /dev/null 2>&1; then
-    echo "Image 'path-planner' not found. Building..."
-    docker build -t path-planner -f Dockerfile ./path-planner/
+#Check if planner image exists
+if ! docker image inspect planner > /dev/null 2>&1; then
+    echo "Image 'planner' not found. Building..."
+    docker build -t planner -f Dockerfile ./planner/
 else
-    echo "Image 'path-planner' already exists."
+    echo "Image 'planner' already exists."
 fi
