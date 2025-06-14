@@ -182,8 +182,6 @@ private:
     std::vector<MapPoint*> mTrackedMapPoints;
     std::vector<cv::KeyPoint> mTrackedKeyPointsUn;
     std::mutex mMutexState;
-
-    string mapPointsFilename = "/home/edgeslam/points.csv";
 };
 
 }// namespace ORB_SLAM

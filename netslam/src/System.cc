@@ -452,9 +452,15 @@ void System::SaveTrajectoryTUM(const string &filename)
     cout << endl << "trajectory saved!" << endl;
 }*/
 
+void System::SaveMapPointsLoop() {
+    while (1) {
+        SaveMapPoints("/home/edgeslam/points.csv");
+        sleep(1);
+    }
+}
 
 // Edge-SLAM: server
-void System::SaveMapPoints()
+void System::SaveMapPoints(const string &filename)
 {
   vector<MapPoint*> mapPoints = mpMap -> GetAllMapPoints();
   
