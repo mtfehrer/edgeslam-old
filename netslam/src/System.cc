@@ -22,7 +22,6 @@
 
 #include "System.h"
 #include "Converter.h"
-#include "MapPointExporter.h"
 #include <thread>
 #include <pangolin/pangolin.h>
 #include <iomanip>
@@ -89,9 +88,6 @@ System::System(const string &strVocFile, const string &strSettingsFile, std::str
         //(it will live in the main thread of execution, the one that called this constructor)
         mpTracker = new Tracking(this, mpVocabulary, mpFrameDrawer, mpMapDrawer,
                                 mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
-
-        mapPointExporter = new MapPointExporter(&mpMap);
-        new thread(mapPointExporter.run);
     } else if (RunType.compare("server") == 0){
         // Edge-SLAM: added settings file
         //Initialize the Local Mapping thread and launch
