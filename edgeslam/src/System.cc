@@ -90,6 +90,7 @@ System::System(const string &strVocFile, const string &strSettingsFile, std::str
                                 mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
         new thread(SaveMapPointsLoop);
+        new thread(SavePoseLoop);
     } else if (RunType.compare("server") == 0){
         // Edge-SLAM: added settings file
         //Initialize the Local Mapping thread and launch
@@ -456,7 +457,7 @@ void System::SaveTrajectoryTUM(const string &filename)
 
 void System::SaveMapPointsLoop() {
     while (1) {
-        SaveMapPoints("/home/edgeslam/points.csv");
+        SaveMapPoints(mapPointsFilename);
         sleep(1);
     }
 }
@@ -473,13 +474,38 @@ void System::SaveMapPoints(const string &filename)
   }
 
   ofstream f;
-  f.open(mapPointsFilename.c_str());
+  f.open(filename.c_str());
 
   for (size_t i=0; i<worldPos.size(); i++) {
     f << worldPos[i].at<float>(0,0) << "," << worldPos[i].at<float>(0,1) << "," << worldPos[i].at<float>(0,2) << endl;
   }
 
   f.close();
+}
+
+void System::SavePoseLoop() {
+    while (1) {
+        ofstream f;
+        f.open(poseFilename.c_str());
+
+        newestKeyFrameId = KeyFrame::nNextId;
+        keyFrame = mpMap.RetrieveKeyFrame(newestKeyFrameId);
+        cv::Mat poseMatrix = keyFrame.GetPose();
+
+        for (int r = 0; r < poseMatrix.rows; ++r) {
+            for (int c = 0; c < poseMatrix.cols; ++c) {
+                outFile << poseMatrix.at<double>(r, c);
+                if (c < poseMatrix.cols - 1) {
+                    outFile << " ";
+                }
+            }
+            outFile << "\n";
+        }
+
+        f.close();
+
+        sleep(1);
+    }
 }
 
 void System::SaveKeyFrameTrajectoryTUM(const string &filename)

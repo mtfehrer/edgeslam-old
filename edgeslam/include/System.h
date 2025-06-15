@@ -110,6 +110,8 @@ public:
     // See format details at: http://vision.in.tum.de/data/datasets/rgbd-dataset
     void SaveKeyFrameTrajectoryTUM(const string &filename);
     void SaveMapPoints(const string &filename);
+    void SaveMapPointsLoop();
+    void SavePoseLoop();
 
     // Save camera trajectory in the KITTI dataset format.
     // Only for stereo and RGB-D. This method does not work for monocular.
@@ -182,6 +184,9 @@ private:
     std::vector<MapPoint*> mTrackedMapPoints;
     std::vector<cv::KeyPoint> mTrackedKeyPointsUn;
     std::mutex mMutexState;
+
+    string mapPointsFilename = "/home/edgeslam/points.csv";
+    string poseFilename = "/home/edgeslam/pose.txt";
 };
 
 }// namespace ORB_SLAM
