@@ -69,3 +69,5 @@ Examples/ROS/Edge_SLAM/build/
 
 # Backup images
 *.tar
+
+.vscode
