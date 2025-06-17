@@ -8,6 +8,7 @@ services:
             - ./start_mobile_testing_container.sh:/home/edgeslam/start_mobile_container.sh
             - ./mobile_input_centralized.txt:/home/edgeslam/mobile_input.txt
             - ./points.csv:/home/edgeslam/points.csv
+            - ./pose.txt:/home/edgeslam/pose.txt
         command: ["bash", "start_mobile_container.sh"]
         networks:
             mynet:
