@@ -458,53 +458,47 @@ void System::SaveTrajectoryTUM(const string &filename)
 
 void System::SaveMapPointsLoop() {
     while (1) {
-        SaveMapPoints(mapPointsFilename);
+        ofstream f;
+        f.open(mapPointsFilename.c_str());
+
+        unique_lock<mutex> lock(mMutexState);
+        vector<MapPoint*> mapPoints = mpMap->GetAllMapPoints();
+        vector<cv::Mat> worldPos;
+        for (size_t i=0; i<mapPoints.size(); i++) {
+            worldPos.push_back(mapPoints[i]->GetWorldPos());
+        }
+        for (size_t i=0; i<worldPos.size(); i++) {
+            f << worldPos[i].at<double>(0,0) << " " << worldPos[i].at<double>(0,1) << " " << worldPos[i].at<double>(0,2) << endl;
+        }
+
+        f.close();
         sleep(1);
     }
+
 }
 
-// Edge-SLAM: server
-void System::SaveMapPoints(const string &filename)
-{
-  vector<MapPoint*> mapPoints = mpMap -> GetAllMapPoints();
-  
-  // Get world position of each map point
-  vector<cv::Mat> worldPos;
-  for (size_t i=0; i<mapPoints.size(); i++) {
-    worldPos.push_back(mapPoints[i]->GetWorldPos());
-  }
-
-  ofstream f;
-  f.open(filename.c_str());
-
-  for (size_t i=0; i<worldPos.size(); i++) {
-    f << worldPos[i].at<float>(0,0) << " " << worldPos[i].at<float>(0,1) << " " << worldPos[i].at<float>(0,2) << endl;
-  }
-
-  f.close();
-}
 
 void System::SaveNewestPoseLoop() {
     while (1) {
         ofstream f;
-        f.open(poseFilename.c_str());
+        f.open(newestPoseFilename.c_str());
 
+        unique_lock<mutex> lock(mMutexState);
         newestKeyFrameId = KeyFrame::nNextId;
         keyFrame = mpMap.RetrieveKeyFrame(newestKeyFrameId);
         cv::Mat poseMatrix = keyFrame.GetPose();
 
-        for (int r = 0; r < poseMatrix.rows; ++r) {
-            for (int c = 0; c < poseMatrix.cols; ++c) {
-                outFile << poseMatrix.at<double>(r, c);
+        for (int r = 0; r < 4; ++r) {
+            for (int c = 0; c < 4; ++c) {
+                f << poseMatrix.at<double>(r, c);
                 if (c < poseMatrix.cols - 1) {
-                    outFile << " ";
+                    f << " ";
                 }
             }
-            outFile << "\n";
+            f << "\n";
         }
 
         f.close();
-
         sleep(1);
     }
 }
@@ -512,25 +506,25 @@ void System::SaveNewestPoseLoop() {
 void System::SaveAllPosesLoop() {
     while (1) {
         ofstream f;
-        f.open(keyFramesFilename.c_str());
+        f.open(allPosesFilename.c_str());
 
+        unique_lock<mutex> lock(mMutexState);
         vector<KeyFrame*> keyFrames = mpMap.GetAllKeyFrames();
         for (int i = 0; i < keyFrames.size(); i++) {
             cv::Mat poseMatrix = keyFrame.GetPose();
-            for (int r = 0; r < poseMatrix.rows; ++r) {
-                for (int c = 0; c < poseMatrix.cols; ++c) {
-                    outFile << poseMatrix.at<double>(r, c);
+            for (int r = 0; r < 4; ++r) {
+                for (int c = 0; c < 4; ++c) {
+                    f << poseMatrix.at<double>(r, c);
                     if (c < poseMatrix.cols - 1) {
-                        outFile << " ";
+                        f << " ";
                     }
                 }
-                outFile << "\n";
+                f << "\n";
             }
-            outFile << "\n";
+            f << "\n";
         }
 
         f.close();
-
         sleep(1);
     }
 }
@@ -549,6 +543,29 @@ void System::SaveAllPosesLoop() {
 //     ifs.read(reinterpret_cast<char*>(&data), sizeof(T));
 //     ifs.close();
 // }
+
+// Edge-SLAM: server
+void System::SaveMapPoints(const string &filename)
+{
+  cout << endl << "Saving map points to " << filename << " ..." << endl;
+  vector<MapPoint*> mapPoints = mpMap -> GetAllMapPoints();
+  
+  // Get world position of each map point
+  vector<cv::Mat> worldPos;
+  for (size_t i=0; i<mapPoints.size(); i++) {
+    worldPos.push_back(mapPoints[i]->GetWorldPos());
+  }
+
+  ofstream f;
+  f.open(filename.c_str());
+
+  for (size_t i=0; i<worldPos.size(); i++) {
+    f << worldPos[i].at<float>(0,0) << " " << worldPos[i].at<float>(0,1) << " " << worldPos[i].at<float>(0,2) << endl;
+  }
+
+  f.close();
+  cout << "Map points saved!" << endl;
+}
 
 void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 {

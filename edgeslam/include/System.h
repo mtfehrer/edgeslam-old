@@ -186,7 +186,7 @@ private:
     std::vector<cv::KeyPoint> mTrackedKeyPointsUn;
     std::mutex mMutexState;
 
-    string mapPointsFilename = "/home/edgeslam/points.csv";
+    string mapPointsFilename = "/home/edgeslam/points.txt";
     string newestPoseFilename = "/home/edgeslam/newest_pose.txt";
     string allPosesFilename = "/home/edgeslam/all_poses.txt";
 };
