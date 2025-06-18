@@ -90,7 +90,8 @@ System::System(const string &strVocFile, const string &strSettingsFile, std::str
                                 mpMap, mpKeyFrameDatabase, strSettingsFile, mSensor);
 
         new thread(SaveMapPointsLoop);
-        new thread(SavePoseLoop);
+        new thread(SaveAllPosesLoop);
+        new thread(SaveNewestPoseLoop);
     } else if (RunType.compare("server") == 0){
         // Edge-SLAM: added settings file
         //Initialize the Local Mapping thread and launch
@@ -477,13 +478,13 @@ void System::SaveMapPoints(const string &filename)
   f.open(filename.c_str());
 
   for (size_t i=0; i<worldPos.size(); i++) {
-    f << worldPos[i].at<float>(0,0) << "," << worldPos[i].at<float>(0,1) << "," << worldPos[i].at<float>(0,2) << endl;
+    f << worldPos[i].at<float>(0,0) << " " << worldPos[i].at<float>(0,1) << " " << worldPos[i].at<float>(0,2) << endl;
   }
 
   f.close();
 }
 
-void System::SavePoseLoop() {
+void System::SaveNewestPoseLoop() {
     while (1) {
         ofstream f;
         f.open(poseFilename.c_str());
@@ -507,6 +508,47 @@ void System::SavePoseLoop() {
         sleep(1);
     }
 }
+
+void System::SaveAllPosesLoop() {
+    while (1) {
+        ofstream f;
+        f.open(keyFramesFilename.c_str());
+
+        vector<KeyFrame*> keyFrames = mpMap.GetAllKeyFrames();
+        for (int i = 0; i < keyFrames.size(); i++) {
+            cv::Mat poseMatrix = keyFrame.GetPose();
+            for (int r = 0; r < poseMatrix.rows; ++r) {
+                for (int c = 0; c < poseMatrix.cols; ++c) {
+                    outFile << poseMatrix.at<double>(r, c);
+                    if (c < poseMatrix.cols - 1) {
+                        outFile << " ";
+                    }
+                }
+                outFile << "\n";
+            }
+            outFile << "\n";
+        }
+
+        f.close();
+
+        sleep(1);
+    }
+}
+
+// Serialization won't work because we don't know array size in advance (array size must be static)
+// template<template T>
+// void System::WriteDataToFile(T data, string filename) {
+//     std::ofstream ofs(filename, std::ios::binary);
+//     ofs.write(reinterpret_cast<const char*>(&data), sizeof(T));
+//     ofs.close();
+// }
+
+// template<template T>
+// void System::ReadDataFromFile(T &data, string filename) {
+//     std::ifstream ifs(filename, std::ios::binary);
+//     ifs.read(reinterpret_cast<char*>(&data), sizeof(T));
+//     ifs.close();
+// }
 
 void System::SaveKeyFrameTrajectoryTUM(const string &filename)
 {

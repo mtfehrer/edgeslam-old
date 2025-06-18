@@ -111,7 +111,8 @@ public:
     void SaveKeyFrameTrajectoryTUM(const string &filename);
     void SaveMapPoints(const string &filename);
     void SaveMapPointsLoop();
-    void SavePoseLoop();
+    void SaveNewestPoseLoop();
+    void SaveAllPosesLoop();
 
     // Save camera trajectory in the KITTI dataset format.
     // Only for stereo and RGB-D. This method does not work for monocular.
@@ -186,7 +187,8 @@ private:
     std::mutex mMutexState;
 
     string mapPointsFilename = "/home/edgeslam/points.csv";
-    string poseFilename = "/home/edgeslam/pose.txt";
+    string newestPoseFilename = "/home/edgeslam/newest_pose.txt";
+    string allPosesFilename = "/home/edgeslam/all_poses.txt";
 };
 
 }// namespace ORB_SLAM
